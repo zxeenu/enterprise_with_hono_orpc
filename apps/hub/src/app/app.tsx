@@ -1,8 +1,21 @@
+import { useEffect } from 'react';
 import NxWelcome from './nx-welcome';
 
 import { Route, Routes, Link } from 'react-router-dom';
+import { client } from '../lib/client';
 
 export function App() {
+  useEffect(() => {
+    const test = async () => {
+      // const data = await client.ping({});
+      const data = await client.ball({
+        name: 'hello world',
+      });
+      console.log(data);
+    };
+    test();
+  }, []);
+
   return (
     <div>
       <NxWelcome title="@enterprise/hub" />
