@@ -1,23 +1,28 @@
-import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Fragment } from 'react';
+import { Link, Route, Routes } from 'react-router-dom';
+import { orpc } from '../lib/client';
 import NxWelcome from './nx-welcome';
 
-import { Route, Routes, Link } from 'react-router-dom';
-import { client } from '../lib/client';
-
 export function App() {
-  useEffect(() => {
-    const test = async () => {
-      // const data = await client.ping({});
-      const data = await client.ball({
-        name: 'hello world',
-      });
-      console.log(data);
-    };
-    test();
-  }, []);
+  const ballQuery = useQuery(
+    orpc.ball.queryOptions({
+      input: {
+        name: 'bobbig',
+      },
+    })
+  );
 
   return (
     <div>
+      {ballQuery.status === 'success' ? (
+        <Fragment>
+          <pre>{JSON.stringify(ballQuery.data, null, 2)}</pre>
+        </Fragment>
+      ) : (
+        <Fragment>Loading</Fragment>
+      )}
+
       <NxWelcome title="@enterprise/hub" />
 
       {/* START: routes */}
